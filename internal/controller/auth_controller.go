@@ -19,6 +19,17 @@ func NewAuthController(authService *service.AuthService) *AuthController {
 	return &AuthController{authService: authService}
 }
 
+// Register godoc
+// @Summary Register a new user
+// @Description Register a new user with email and password
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body dto.RegisterRequest true "Register request"
+// @Success 201 {object} response.APIResponse
+// @Failure 400 {object} response.APIResponse
+// @Failure 500 {object} response.APIResponse
+// @Router /api/register [post]
 func (a *AuthController) Register(ctx *gin.Context) {
 	var req dto.RegisterRequest
 	if err := helper.BindJSON(ctx, &req); err != nil {
@@ -39,6 +50,18 @@ func (a *AuthController) Register(ctx *gin.Context) {
 	response.Success(ctx, http.StatusCreated, "registration successful", gin.H{"user": gin.H{"id": user.ID, "email": user.Email}})
 }
 
+// Login godoc
+// @Summary Authenticate a user
+// @Description Login with email and password to receive a JWT token
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body dto.LoginRequest true "Login request"
+// @Success 200 {object} response.APIResponse
+// @Failure 400 {object} response.APIResponse
+// @Failure 401 {object} response.APIResponse
+// @Failure 500 {object} response.APIResponse
+// @Router /api/login [post]
 func (a *AuthController) Login(ctx *gin.Context) {
 	var req dto.LoginRequest
 	if err := helper.BindJSON(ctx, &req); err != nil {

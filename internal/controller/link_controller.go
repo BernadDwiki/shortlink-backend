@@ -20,6 +20,19 @@ func NewLinkController(linkService *service.LinkService) *LinkController {
 	return &LinkController{linkService: linkService}
 }
 
+// CreateLink godoc
+// @Summary Create a short link
+// @Description Create a short link for the authenticated user
+// @Tags Links
+// @Accept json
+// @Produce json
+// @Param request body dto.CreateLinkRequest true "Create link request"
+// @Success 201 {object} response.APIResponse
+// @Failure 400 {object} response.APIResponse
+// @Failure 401 {object} response.APIResponse
+// @Failure 500 {object} response.APIResponse
+// @Security ApiKeyAuth
+// @Router /api/links [post]
 func (lc *LinkController) CreateLink(ctx *gin.Context) {
 	userID := ctx.GetInt("user_id")
 	if userID == 0 {
@@ -59,6 +72,17 @@ func (lc *LinkController) CreateLink(ctx *gin.Context) {
 	})
 }
 
+// GetUserLinks godoc
+// @Summary Get authenticated user's links
+// @Description Retrieve all active short links created by the authenticated user
+// @Tags Links
+// @Accept json
+// @Produce json
+// @Success 200 {object} response.APIResponse
+// @Failure 401 {object} response.APIResponse
+// @Failure 500 {object} response.APIResponse
+// @Security ApiKeyAuth
+// @Router /api/links [get]
 func (lc *LinkController) GetUserLinks(ctx *gin.Context) {
 	userID := ctx.GetInt("user_id")
 	if userID == 0 {
@@ -75,6 +99,20 @@ func (lc *LinkController) GetUserLinks(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Links retrieved successfully", links)
 }
 
+// DeleteLink godoc
+// @Summary Delete a link
+// @Description Soft delete a link owned by the authenticated user
+// @Tags Links
+// @Accept json
+// @Produce json
+// @Param id path int true "Link ID"
+// @Success 200 {object} response.APIResponse
+// @Failure 400 {object} response.APIResponse
+// @Failure 401 {object} response.APIResponse
+// @Failure 404 {object} response.APIResponse
+// @Failure 500 {object} response.APIResponse
+// @Security ApiKeyAuth
+// @Router /api/links/{id} [delete]
 func (lc *LinkController) DeleteLink(ctx *gin.Context) {
 	userID := ctx.GetInt("user_id")
 	if userID == 0 {
@@ -101,6 +139,16 @@ func (lc *LinkController) DeleteLink(ctx *gin.Context) {
 	response.Success(ctx, http.StatusOK, "Link deleted successfully", nil)
 }
 
+// GetLink godoc
+// @Summary Redirect to original URL
+// @Description Public endpoint to redirect a short slug to the original URL
+// @Tags Links
+// @Accept json
+// @Produce json
+// @Param slug path string true "Link slug"
+// @Success 301 "redirect"
+// @Failure 404 {object} response.APIResponse
+// @Router /{slug} [get]
 func (lc *LinkController) GetLink(ctx *gin.Context) {
 	slug := ctx.Param("slug")
 

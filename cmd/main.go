@@ -1,3 +1,17 @@
+// @title Shortlink Backend API
+// @version 1.0
+// @description Shortlink service API with JWT authentication, link creation, listing, deletion, and redirect.
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.url http://www.example.com/support
+// @contact.email support@example.com
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 package main
 
 import (
@@ -6,6 +20,7 @@ import (
 	"log"
 	"time"
 
+	_ "github.com/BernadDwiki/shortlink-backend/docs"
 	"github.com/BernadDwiki/shortlink-backend/internal/config"
 	"github.com/BernadDwiki/shortlink-backend/internal/controller"
 	"github.com/BernadDwiki/shortlink-backend/internal/middleware"
@@ -14,6 +29,8 @@ import (
 	"github.com/BernadDwiki/shortlink-backend/internal/service"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -39,6 +56,8 @@ func main() {
 
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware)
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.RegisterRoutes(r, authController, linkController, cfg.JWTSecret)
 
