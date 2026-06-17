@@ -105,7 +105,7 @@ func (lc *LinkController) GetLink(ctx *gin.Context) {
 
 	link, err := lc.linkService.GetLinkBySlug(ctx, slug)
 	if err != nil {
-		response.Error(ctx, http.StatusNotFound, "link not found")
+		ctx.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
