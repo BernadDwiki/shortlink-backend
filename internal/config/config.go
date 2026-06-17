@@ -13,6 +13,7 @@ type Config struct {
 	AppPort              string
 	JWTSecret            string
 	JWTExpirationMinutes int
+	BaseURL              string
 }
 
 func LoadConfig() *Config {
@@ -33,11 +34,17 @@ func LoadConfig() *Config {
 
 	dbURL := os.Getenv("DB_URL")
 
+	baseURL := os.Getenv("BASE_URL")
+	if baseURL == "" {
+		baseURL = "http://localhost:8080"
+	}
+
 	return &Config{
 		DBURL:                dbURL,
 		AppHost:              appHost,
 		AppPort:              appPort,
 		JWTSecret:            jwtSecret,
 		JWTExpirationMinutes: jwtExpiration,
+		BaseURL:              baseURL,
 	}
 }

@@ -29,14 +29,18 @@ func main() {
 		log.Fatalf("failed to ping database: %v", err)
 	}
 
-	repo := repository.NewUserRepository(db)
-	authService := service.NewAuthService(repo, cfg.JWTSecret, time.Minute*time.Duration(cfg.JWTExpirationMinutes))
+	userRepo := repository.NewUserRepository(db)
+	authService := service.NewAuthService(userRepo, cfg.JWTSecret, time.Minute*time.Duration(cfg.JWTExpirationMinutes))
 	authController := controller.NewAuthController(authService)
+
+	linkRepo := repository.NewLinkRepository(db)
+	linkService := service.NewLinkService(linkRepo, cfg.BaseURL)
+	linkController := controller.NewLinkController(linkService)
 
 	r := gin.Default()
 	r.Use(middleware.CORSMiddleware)
 
-	router.RegisterRoutes(r, authController, cfg.JWTSecret)
+	router.RegisterRoutes(r, authController, linkController, cfg.JWTSecret)
 
 	addr := fmt.Sprintf("%s:%s", cfg.AppHost, cfg.AppPort)
 	log.Printf("starting server at %s", addr)

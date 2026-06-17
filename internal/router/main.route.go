@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterRoutes(r *gin.Engine, authController *controller.AuthController, jwtSecret string) {
+func RegisterRoutes(r *gin.Engine, authController *controller.AuthController, linkController *controller.LinkController, jwtSecret string) {
 	api := r.Group("/api")
 
 	routes := api.Group("/auth")
@@ -15,8 +15,11 @@ func RegisterRoutes(r *gin.Engine, authController *controller.AuthController, jw
 	protected := api.Group("/links")
 	protected.Use(middleware.JWTAuthMiddleware(jwtSecret))
 	{
-		protected.GET("", func(ctx *gin.Context) {
-			ctx.JSON(200, gin.H{"message": "protected links endpoint"})
-		})
+		protected.POST("", linkController.CreateLink)
+		protected.GET("", linkController.GetUserLinks)
+		protected.DELETE("/:id", linkController.DeleteLink)
 	}
+
+	// Public redirect endpoint
+	r.GET("/:slug", linkController.GetLink)
 }
