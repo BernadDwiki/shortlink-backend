@@ -9,9 +9,10 @@ import (
 func RegisterRoutes(r *gin.Engine, authController *controller.AuthController, linkController *controller.LinkController, jwtSecret string) {
 	api := r.Group("/api")
 
-	routes := api.Group("/auth")
-	RegisterAuthRoutes(routes, authController)
+	// Auth routes
+	RegisterAuthRoutes(api, authController)
 
+	// Protected links routes
 	protected := api.Group("/links")
 	protected.Use(middleware.JWTAuthMiddleware(jwtSecret))
 	{
