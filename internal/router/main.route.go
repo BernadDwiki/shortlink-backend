@@ -2,7 +2,6 @@ package router
 
 import (
 	"github.com/BernadDwiki/shortlink-backend/internal/controller"
-	"github.com/BernadDwiki/shortlink-backend/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,15 +11,7 @@ func RegisterRoutes(r *gin.Engine, authController *controller.AuthController, li
 	// Auth routes
 	RegisterAuthRoutes(api, authController)
 
-	// Protected links routes
-	protected := api.Group("/links")
-	protected.Use(middleware.JWTAuthMiddleware(jwtSecret))
-	{
-		protected.POST("", linkController.CreateLink)
-		protected.GET("", linkController.GetUserLinks)
-		protected.DELETE("/:id", linkController.DeleteLink)
-	}
-
-	// Public redirect endpoint
-	r.GET("/:slug", linkController.GetLink)
+	// Links routes (protected + public)
+	RegisterLinkRoutes(api, linkController, jwtSecret)
+	RegisterPublicRoutes(r, linkController)
 }
