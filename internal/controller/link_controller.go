@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/BernadDwiki/shortlink-backend/internal/dto"
+	"github.com/BernadDwiki/shortlink-backend/internal/helper"
 	"github.com/BernadDwiki/shortlink-backend/internal/response"
 	"github.com/BernadDwiki/shortlink-backend/internal/service"
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,7 @@ func (lc *LinkController) CreateLink(ctx *gin.Context) {
 	}
 
 	var req dto.CreateLinkRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := helper.BindJSON(ctx, &req); err != nil {
 		response.Error(ctx, http.StatusBadRequest, err.Error())
 		return
 	}

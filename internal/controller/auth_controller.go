@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/BernadDwiki/shortlink-backend/internal/dto"
+	"github.com/BernadDwiki/shortlink-backend/internal/helper"
 	"github.com/BernadDwiki/shortlink-backend/internal/response"
 	"github.com/BernadDwiki/shortlink-backend/internal/service"
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,7 @@ func NewAuthController(authService *service.AuthService) *AuthController {
 
 func (a *AuthController) Register(ctx *gin.Context) {
 	var req dto.RegisterRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := helper.BindJSON(ctx, &req); err != nil {
 		response.Error(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -40,7 +41,7 @@ func (a *AuthController) Register(ctx *gin.Context) {
 
 func (a *AuthController) Login(ctx *gin.Context) {
 	var req dto.LoginRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := helper.BindJSON(ctx, &req); err != nil {
 		response.Error(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
