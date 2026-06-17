@@ -11,3 +11,4 @@ CREATE TABLE links (
 CREATE UNIQUE INDEX idx_links_slug
 ON links(slug)
 WHERE deleted_at IS NULL;
+table links;
