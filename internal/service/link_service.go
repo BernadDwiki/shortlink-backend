@@ -102,10 +102,11 @@ func (s *LinkService) CreateLink(ctx context.Context, userID int, req dto.Create
 	}
 
 	return &dto.LinkResponse{
-		ID:       link.ID,
-		Original: link.OriginalURL,
-		Slug:     link.Slug,
-		ShortURL: fmt.Sprintf("%s/%s", s.baseURL, link.Slug),
+		ID:        link.ID,
+		Original:  link.OriginalURL,
+		Slug:      link.Slug,
+		ShortURL:  fmt.Sprintf("%s/%s", s.baseURL, link.Slug),
+		CreatedAt: link.CreatedAt.Format(time.RFC3339),
 	}, nil
 }
 
@@ -118,10 +119,11 @@ func (s *LinkService) GetUserLinks(ctx context.Context, userID int) ([]dto.LinkR
 	var responses []dto.LinkResponse
 	for _, link := range links {
 		responses = append(responses, dto.LinkResponse{
-			ID:       link.ID,
-			Original: link.OriginalURL,
-			Slug:     link.Slug,
-			ShortURL: fmt.Sprintf("%s/%s", s.baseURL, link.Slug),
+			ID:        link.ID,
+			Original:  link.OriginalURL,
+			Slug:      link.Slug,
+			ShortURL:  fmt.Sprintf("%s/%s", s.baseURL, link.Slug),
+			CreatedAt: link.CreatedAt.Format(time.RFC3339),
 		})
 	}
 

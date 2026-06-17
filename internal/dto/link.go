@@ -6,8 +6,9 @@ type CreateLinkRequest struct {
 }
 
 type LinkResponse struct {
-	ID       int    `json:"id"`
-	Original string `json:"original_url"`
-	Slug     string `json:"slug"`
-	ShortURL string `json:"short_url"`
+	ID        int    `json:"id"`
+	Original  string `json:"original_url"`
+	Slug      string `json:"slug"`
+	ShortURL  string `json:"short_url"`
+	CreatedAt string `json:"created_at"`
 }
