@@ -88,23 +88,15 @@ shortlink-backend/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/<your-repository>.git
-cd <your-repository>/shortlink-backend
+git clone https://github.com/BernadDwiki/shortlink-backend.git
+cd shortlink-backend
 ```
-
-If the repository contains both backend and frontend folders in the same root, clone the repo and then change into `shortlink-backend`.
 
 ---
 
 ## 2. Environment Configuration
 
-Copy `example.env` to `.env` and update values as needed:
-
-```bash
-cp example.env .env
-```
-
-Example `.env` contents:
+Create a `.env` file in the project root:
 
 ```env
 APP_HOST=0.0.0.0
@@ -117,8 +109,6 @@ JWT_EXPIRATION_MINUTES=30
 
 BASE_URL=http://localhost:8080
 ```
-
-> Note: The application reads `DB_URL` directly. If you use a `.env` file with separate `DB_HOST`, `DB_USER`, and friends, make sure `DB_URL` is set or expanded correctly.
 
 ### Environment Variables
 
@@ -183,20 +173,13 @@ make migrate-down
 go mod download
 ```
 
+---
+
 ## 5. Run Application
 
-Load environment variables, then start the server:
-
 ```bash
-# in bash or zsh
-set -a
-source .env
-set +a
-
 go run cmd/main.go
 ```
-
-If you prefer, set the environment variables directly in your shell before running the app.
 
 Server will run at:
 
@@ -254,7 +237,7 @@ http://localhost:8080/swagger/index.html
 | /api/links | GET | Get all user links |
 | /api/links | POST | Create short link |
 | /api/links/:id | DELETE | Delete link |
-| /:shortCode | GET | Redirect short URL |
+| /:slug | GET | Redirect short URL |
 
 ## Dashboard
 
