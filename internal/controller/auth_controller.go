@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/BernadDwiki/shortlink-backend/internal/dto"
 	"github.com/BernadDwiki/shortlink-backend/internal/helper"
@@ -79,5 +80,12 @@ func (a *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	response.Success(ctx, http.StatusOK, "Login successful", gin.H{"token": token, "user": gin.H{"id": user.ID, "email": user.Email}})
+	response.Success(ctx, http.StatusOK, "Login successful", gin.H{
+		"token": token,
+		"user": gin.H{
+			"id":         user.ID,
+			"email":      user.Email,
+			"created_at": user.CreatedAt.Format(time.RFC3339),
+		},
+	})
 }
